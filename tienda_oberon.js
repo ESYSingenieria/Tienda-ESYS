@@ -1,13 +1,12 @@
-// Configuración de Firebase (Tienda Oberon)
+// Configuración de Firebase (igual que antes)
 const firebaseConfig = {
-    apiKey: "AIzaSyDCA2KrFlJ4XzBK6Hmh0yyIIOOL66Q2njQ",
-    authDomain: "tienda-oberon.firebaseapp.com",
-    projectId: "tienda-oberon",
-    storageBucket: "tienda-oberon.firebasestorage.app",
-    messagingSenderId: "504035474209",
-    appId: "1:504035474209:web:2d664ade426cd9f1ea5c60"
+  apiKey: "AIzaSyDCA2KrFlJ4XzBK6Hmh0yyIIOOL66Q2njQ",
+  authDomain: "tienda-oberon.firebaseapp.com",
+  projectId: "tienda-oberon",
+  storageBucket: "tienda-oberon.firebasestorage.app",
+  messagingSenderId: "504035474209",
+  appId: "1:504035474209:web:2d664ade426cd9f1ea5c60"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 let cart = [];
@@ -138,62 +137,56 @@ function renderCart() {
     });
 }
 
-// -- Aquí solo cambié el URL: --
+// Función corregida de solicitud de cotización
 async function processQuotation() {
-    // Campos obligatorios
-    const razon    = document.getElementById('input-name').value.trim();
-    const contacto = document.getElementById('input-contact').value.trim();
-    const email    = document.getElementById('input-email').value.trim();
-    if (!cart.length)    return alert('El carrito está vacío.');
-    if (!razon)          return alert('Ingrese Nombre o Razón Social.');
-    if (!contacto)       return alert('Ingrese Nombre de Contacto.');
-    if (!email)          return alert('Ingrese Email de Contacto.');
+  const razon    = document.getElementById('input-name').value.trim();
+  const contacto = document.getElementById('input-contact').value.trim();
+  const email    = document.getElementById('input-email').value.trim();
 
-    // Prepara datos de cliente
-const cliente = {
-  razonSocial: razon,
-  contacto,
-  email
-};
+  if (!cart.length)  return alert('El carrito está vacío.');
+  if (!razon)        return alert('Ingrese Nombre o Razón Social.');
+  if (!contacto)     return alert('Ingrese Nombre de Contacto.');
+  if (!email)        return alert('Ingrese Email de Contacto.');
 
-const rawRut       = document.getElementById('input-rut').value.trim();
-if (rawRut)        cliente.rut       = rawRut;
+  // arma cliente
+  const cliente = { razonSocial: razon, contacto, email };
+  const rut = document.getElementById('input-rut').value.trim();
+  if (rut) cliente.rut = rut;
+  const giro = document.getElementById('input-giro').value.trim();
+  if (giro) cliente.giro = giro;
+  const direccion = document.getElementById('input-direccion').value.trim();
+  if (direccion) cliente.direccion = direccion;
 
-const rawGiro      = document.getElementById('input-giro').value.trim();
-if (rawGiro)       cliente.giro      = rawGiro;
+  // arma items
+  const items = cart.map(i => ({ nombre: i.name, cantidad: i.quantity }));
 
-const rawDireccion = document.getElementById('input-direccion').value.trim();
-if (rawDireccion)  cliente.direccion = rawDireccion;
+  try {
+    // opcional: guarda en Firestore
+    await db.collection('cotizaciones').add({
+      cliente,
+      items,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
-    // Productos
-    const items = cart.map(i => ({ nombre: i.name, cantidad: i.quantity }));
+    // Llamada al Cloud Function
+    const endpoint = 'https://us-central1-tienda-oberon.cloudfunctions.net/sendQuotationEmail';
+    const resp = await fetch(endpoint, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ cliente, items })
+    });
 
-    try {
-      // Guarda en Firestore (opcional)
-      await db.collection('cotizaciones').add({
-        cliente,
-        items,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      // *** LLAMADA CORREGIDA ***
-      const endpoint = 'https://us-central1-tienda-oberon.cloudfunctions.net/sendQuotationEmail';
-      const resp = await fetch(endpoint, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ cliente, items })
-      });
-
-      if (resp.ok) {
-        alert('Cotización enviada correctamente.');
-        cart = [];
-        renderCart();
-      } else {
-        console.error(await resp.text());
-        alert('Error al enviar cotización.');
-      }
-    } catch (e) {
-      console.error('Error de red:', e);
-      alert('Error de red al solicitar cotización');
+    if (resp.ok) {
+      alert('Cotización enviada correctamente.');
+      cart = [];
+      renderCart();
+    } else {
+      const errText = await resp.text();
+      console.error('Respuesta  error:', errText);
+      alert('Hubo un error al enviar la cotización.');
     }
+  } catch (e) {
+    console.error('Error de red:', e);
+    alert('Error de red al solicitar cotización');
+  }
 }
