@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de EPP</title>
+    <link rel="stylesheet" href="tienda_oberon.css">
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="app">
+
+        <header style="text-align: center; padding: 0px; background-color: #ffffff;">
+            <a href="https://esys.cl/"> <!-- Enlace al logo -->
+                <img src="logo.png" alt="Logo de la Empresa" style="max-width: 200px; height: auto;">
+            </a>
+        </header>
+
+        <main>
+            <!-- Lista de EPP -->
+            <section id="epp">
+                <h2>EPP</h2>
+                <div id="epp-list"></div>
+            </section>
+
+            <!-- Carrito de Compras -->
+
+            <section id="cart">
+                <h2>Carrito de Compras</h2>
+                    <div id="cart-items"></div>
+                    <div id="checkout-container"></div>
+                    <div id="discount-section" style="margin-bottom: 10px;">
+                      <!-- Añade justo después de la sección de descuento y antes del botón de cotización -->
+<div id="client-section">
+  <h3>Datos del Cliente</h3>
+  <div class="client-grid">
+    <div class="client-field">
+      <label for="input-name">Nombre o Razón Social*:</label>
+      <input type="text" id="input-name" placeholder="Ej. Empresa S.A.">
+    </div>
+    <div class="client-field">
+      <label for="input-contact">Nombre de Contacto*:</label>
+      <input type="text" id="input-contact" placeholder="Ej. Juan Pérez">
+    </div>
+    <div class="client-field">
+      <label for="input-email">Email de Contacto*:</label>
+      <input type="email" id="input-email" placeholder="ejemplo@dominio.cl">
+    </div>
+    <div class="client-field">
+      <label for="input-rut">RUT (con puntos y guión):</label>
+      <input type="text" id="input-rut" placeholder="12.345.678-9">
+    </div>
+    <div class="client-field">
+      <label for="input-giro">Giro:</label>
+      <input type="text" id="input-giro" placeholder="Servicios de Ingeniería">
+    </div>
+    <div class="client-field-full">
+      <label for="input-direccion">Dirección de Facturación:</label>
+      <input type="text" id="input-direccion" placeholder="OHiggins 236, Oficina 914">
+    </div>
+  </div>
+</div>                 
+                        <div id="cart-summary">
+                            <button id="checkout-button">Proceder al Pago</button>
+                        </div>
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="tienda_oberon.js"></script>
+</body>
+</html>
