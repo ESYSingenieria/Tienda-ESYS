@@ -150,14 +150,20 @@ async function processQuotation() {
     if (!email)          return alert('Ingrese Email de Contacto.');
 
     // Prepara datos de cliente
-    const cliente = {
-      razonSocial: razon,
-      contacto,
-      email,
-      rut:       document.getElementById('input-rut').value.trim() || undefined,
-      giro:      document.getElementById('input-giro').value.trim() || undefined,
-      direccion: document.getElementById('input-direccion').value.trim() || undefined
-    };
+const cliente = {
+  razonSocial: razon,
+  contacto,
+  email
+};
+
+const rawRut       = document.getElementById('input-rut').value.trim();
+if (rawRut)        cliente.rut       = rawRut;
+
+const rawGiro      = document.getElementById('input-giro').value.trim();
+if (rawGiro)       cliente.giro      = rawGiro;
+
+const rawDireccion = document.getElementById('input-direccion').value.trim();
+if (rawDireccion)  cliente.direccion = rawDireccion;
 
     // Productos
     const items = cart.map(i => ({ nombre: i.name, cantidad: i.quantity }));
