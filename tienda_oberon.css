@@ -40,7 +40,7 @@ h1, h2 {
     padding: 1em;
     width: calc(21.5% - 1em);
     text-align: center;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .epp-card h3 {
@@ -71,7 +71,7 @@ h1, h2 {
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 #cart-items {
