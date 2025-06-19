@@ -25,7 +25,7 @@ h1, h2 {
 #epp-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 2em;
+    gap: 3em;
 }
 
 .epp-card {
@@ -34,7 +34,7 @@ h1, h2 {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1em;
-    width: calc(20% - 1em);
+    width: calc(22% - 1em);
     text-align: center;
 }
 
