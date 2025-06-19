@@ -21,6 +21,14 @@ h1, h2 {
     color: #333;
 }
 
+#epp {
+  background-image: url('fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
 /* Lista de epp */
 #epp-list {
     display: flex;
