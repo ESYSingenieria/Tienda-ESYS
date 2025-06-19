@@ -33,14 +33,13 @@ h1, h2 {
 }
 
 .epp-card {
-    background: white;
+    background-color: rgba(255, 255, 255, 0.9) !important;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1em;
     width: calc(21.5% - 1em);
     text-align: center;
-    opacity: 0.9;
 }
 
 .epp-card h3 {
@@ -68,7 +67,7 @@ h1, h2 {
 #cart {
     margin-top: 2em;
     padding: 1em;
-    background: white;
+    background-color: rgba(255, 255, 255, 0.9) !important;
     border: 1px solid #ddd;
     border-radius: 8px;
     opacity: 0.9;
